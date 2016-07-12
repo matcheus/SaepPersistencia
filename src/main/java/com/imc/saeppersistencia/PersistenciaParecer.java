@@ -30,7 +30,7 @@ public class PersistenciaParecer implements ParecerRepository {
     DBCollection collParecer = db.getCollection("Pareceres");
     DBCollection collRadoc = db.getCollection("Radocs");
     Gson gson = new GsonBuilder().registerTypeAdapter(Avaliavel.class, new InterfaceAdapter<Avaliavel>())
-                             .create();
+            .create();
 
     /**
      *
@@ -50,7 +50,7 @@ public class PersistenciaParecer implements ParecerRepository {
         DBObject updateQuery = new BasicDBObject("$push", listItem);
         collParecer.update(doc, updateQuery);
     }
-    
+
     public void mostrarTudo() {
         DBCursor cursor = collParecer.find();
         while (cursor.hasNext()) {
@@ -236,7 +236,6 @@ public class PersistenciaParecer implements ParecerRepository {
                 DBObject doc = cursor.next();
                 String json = doc.toString();
                 Parecer pare = gson.fromJson(json, Parecer.class);
-
                 List<Nota> notas = pare.getNotas();
                 System.out.println(notas.get(0));
                 for (int i = 0; i < notas.size(); i++) {
