@@ -39,6 +39,8 @@ public class MainResolucao {
         //salvarTipo();
         //removerTipo();
         //tipoPorCodigo();
+        //tiposPeloNome();
+        //resolucoes();
         //persiste.mostrarTudo();
     }
 
@@ -80,21 +82,30 @@ public class MainResolucao {
         String descricao = "descrevaTipo";
         Set<Atributo> atributos = new HashSet<Atributo>();
         atributos.add(new Atributo("nome", "descriçao", 1));
-        persiste.persisteTipo( new Tipo(id, nome, descricao, atributos));
+        persiste.persisteTipo(new Tipo(id, nome, descricao, atributos));
     }
-    
+
     private static void removerResolucao() {
         String id = "1";
         persiste.remove(id);
     }
-    
+
     private static void removerTipo() {
         String id = "tipo1";
         persiste.removeTipo(id);
     }
-    
+
     private static void tipoPorCodigo() {
         String id = "tipo1";
         System.out.println(persiste.tipoPeloCodigo(id).getId());
+    }
+
+    private static void tiposPeloNome() {
+        String nome = "nomeTipo";
+        persiste.tiposPeloNome(nome);
+    }
+
+    private static void resolucoes() {
+        persiste.resolucoes();
     }
 }
