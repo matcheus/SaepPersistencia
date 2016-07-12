@@ -87,8 +87,8 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             pode = false;
         }
         if (pode == true) {
-            Gson teste = new Gson();
-            String json = teste.toJson(rslc);
+            Gson gson = new Gson();
+            String json = gson.toJson(rslc);
             SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
             DBObject dbObject = (DBObject) JSON.parse(json);
             collResolucao.insert(dbObject);
@@ -155,8 +155,8 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             pode = false;
         }
         if (pode == true) {
-            Gson teste = new Gson();
-            String json = teste.toJson(tipo);
+            Gson gson = new Gson();
+            String json = gson.toJson(tipo);
             DBObject dbObject = (DBObject) JSON.parse(json);
             collTipo.insert(dbObject);
             cursor.close();
@@ -192,15 +192,13 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     public Tipo tipoPeloCodigo(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
         DBCursor cursor = collTipo.find(query);
+        Gson gson = new Gson();
         Tipo tipo = null;
         while (cursor.hasNext()) {
             DBObject doc = cursor.next();
-            String id = (String) doc.get("id");
-            String nome = (String) doc.get("nome");
-            String descricao = (String) doc.get("descricao");
-            Set<Atributo> atributos = (HashSet<Atributo>) doc.get("atributos");
-            Tipo tipoTemp = new Tipo(id, nome, descricao, atributos);
-            tipo = tipoTemp;
+            String json = doc.toString();
+            Tipo tipo2 = gson.fromJson(json, Tipo.class);  
+            tipo = tipo2;
         }
         cursor.close();
         return tipo;
