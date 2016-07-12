@@ -38,7 +38,7 @@ public class MainResolucao {
         //removerResolucao();
         //salvarTipo();
         //removerTipo();
-        //tipoPorCodigo();
+        tipoPorCodigo();
         //tiposPeloNome();
         //resolucoes();
     }
@@ -96,7 +96,6 @@ public class MainResolucao {
 
     private static void tipoPorCodigo() {
         String id = "tipo1";
-        System.out.println(persiste.tipoPeloCodigo(id).getId());
     }
 
     private static void tiposPeloNome() {
