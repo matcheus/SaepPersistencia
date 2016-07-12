@@ -35,9 +35,8 @@ public class MainParecer {
         //salvarParecer();
         //adicionarNota();
         //removerRadoc();
-        removerNota();
+        //removerNota();
         //pesquisarRadocById();
-        persiste.mostrarTudo();
     }
 
     private static Parecer pesquisarParecerById() {

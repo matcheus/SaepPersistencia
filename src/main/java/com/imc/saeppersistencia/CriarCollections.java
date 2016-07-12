@@ -17,14 +17,20 @@ public class CriarCollections {
     private DBCollection collPersist; 
 
     /**
-     *
+     * O contrutor recebe o nome da nova Collection
+     * Chama o método que cria a nova Collection no Banco de dados
      * @param nome
      */
     public CriarCollections(String nome) {
         this.nome = nome;
         criarColl();
     }
-
+    
+    /**
+     * Cria uma nova Collection no BD
+     * Inicializa a nova Collection
+     * @param
+     */
     private void criarColl(){
         DBCollection coll = db.getCollection(nome);
         BasicDBObject dbName = new BasicDBObject("Collection", nome);

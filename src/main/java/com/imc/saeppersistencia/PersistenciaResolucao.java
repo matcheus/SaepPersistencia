@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.imc.saeppersistencia;
 
-import br.ufg.inf.es.saep.sandbox.dominio.Atributo;
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.ResolucaoRepository;
@@ -22,9 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,9 +33,17 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     DBCollection collTipo = db.getCollection("Tipos");
 
     /**
+     * Recupera a instância de {@code Resolucao} correspondente
+     * ao identificador.
      *
-     * @param string
-     * @return
+     * @param id O identificador único da resolução a
+     *                      ser recuperada.
+     *
+     * @return {@code Resolucao} identificada por {@code id}.
+     * O retorno {@code null} indica que não existe resolução
+     * com o identificador fornecido.
+     *
+     * @see #persiste(Resolucao)
      */
     @Override
     public Resolucao byId(String string) {
@@ -72,9 +73,25 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     }
 
     /**
+     * Persiste uma resolução.
      *
-     * @param rslc
-     * @return
+     * @throws CampoExigidoNaoFornecido Caso o identificador não
+     * seja fornecido.
+     *
+     * @throws IdentificadorExistente Caso uma resolução com identificador
+     * igual àquele fornecido já exista.
+     *
+     * @param resolucao A resolução a ser persistida.
+     *
+     * @return O identificador único da resolução, conforme
+     * fornecido em propriedade do objeto fornecido. Observe que
+     * o método retorna {@code null} para indicar que a
+     * operação não foi realizada de forma satisfatória,
+     * possivelmente por já existir resolução com
+     * identificador semelhante.
+     *
+     * @see #byId(String)
+     * @see #remove(String)
      */
     @Override
     public String persiste(Resolucao rslc) {
@@ -106,9 +123,17 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     }
 
     /**
+     * Remove a resolução com o identificador
+     * fornecido.
      *
-     * @param string
-     * @return
+     * @see #persiste(Resolucao)
+     *
+     * @param identificador O identificador único da
+     *                      resolução a ser removida.
+     *
+     * @return O valor {@code true} se a operação foi
+     * executada de forma satisfatória e {@code false},
+     * caso contrário.
      */
     @Override
     public boolean remove(String string) {
@@ -125,9 +150,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         return true;
     }
 
-    /**
+   /**
+     * Recupera a lista dos identificadores das
+     * resoluções disponíveis.
      *
-     * @return
+     * @return Identificadores das resoluções disponíveis.
      */
     @Override
     public List<String> resolucoes() {
@@ -141,8 +168,12 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     }
 
     /**
+     * Persiste o tipo fornecido.
      *
-     * @param tipo
+     * @throws IdentificadorExistente Caso o tipo já
+     * esteja persistido no repositório.
+     *
+     * @param tipo O objeto a ser persistido.
      */
     @Override
     public void persisteTipo(Tipo tipo) {
@@ -166,8 +197,13 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     }
 
     /**
+     * Remove o tipo.
      *
-     * @param string
+     * @throws ResolucaoUsaTipoException O tipo
+     * é empregado por pelo menos uma resolução.
+     *
+     * @param codigo O identificador do tipo a
+     *               ser removido.
      */
     @Override
     public void removeTipo(String string) {
@@ -184,9 +220,13 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     }
 
     /**
+     * Recupera o tipo com o código fornecido.
      *
-     * @param string
-     * @return
+     * @param codigo O código único do tipo.
+     *
+     * @return A instância de {@link Tipo} cujo
+     * código único é fornecido. Retorna {@code null}
+     * caso não exista tipo com o código indicado.
      */
     @Override
     public Tipo tipoPeloCodigo(String string) {
@@ -205,9 +245,20 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     }
 
     /**
+     * Recupera a lista de tipos cujos nomes
+     * são similares àquele fornecido. Um nome é
+     * similar àquele do tipo caso contenha o
+     * argumento fornecido. Por exemplo, para o nome
+     * "casa" temos que "asa" é similar.
      *
-     * @param string
-     * @return
+     * Um nome é dito similar se contém a sequência
+     * indicada.
+     *
+     * @param nome Sequência que será empregada para
+     *             localizar tipos por nome.
+     *
+     * @return A coleção de tipos cujos nomes satisfazem
+     * um padrão de semelhança com a sequência indicada.
      */
     @Override
     public List<Tipo> tiposPeloNome(String string) {
