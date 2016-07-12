@@ -8,6 +8,7 @@ import br.ufg.inf.es.saep.sandbox.dominio.Pontuacao;
 import br.ufg.inf.es.saep.sandbox.dominio.Radoc;
 import br.ufg.inf.es.saep.sandbox.dominio.Relato;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -28,6 +29,8 @@ public class PersistenciaParecer implements ParecerRepository {
     DB db = mongoClient.getDB("saep");
     DBCollection collParecer = db.getCollection("Pareceres");
     DBCollection collRadoc = db.getCollection("Radocs");
+    Gson gson = new GsonBuilder().registerTypeAdapter(Avaliavel.class, new InterfaceAdapter<Avaliavel>())
+                             .create();
 
     /**
      *
@@ -36,8 +39,7 @@ public class PersistenciaParecer implements ParecerRepository {
      */
     @Override
     public void adicionaNota(String string, Nota nota) {
-        Gson teste = new Gson();
-        String json = teste.toJson(nota);
+        String json = gson.toJson(nota);
         DBObject dbObject = (DBObject) JSON.parse(json);
 
         BasicDBObject listItem = new BasicDBObject().append("notas", dbObject);
@@ -47,6 +49,14 @@ public class PersistenciaParecer implements ParecerRepository {
         DBObject doc = cursor.next();
         DBObject updateQuery = new BasicDBObject("$push", listItem);
         collParecer.update(doc, updateQuery);
+    }
+    
+    public void mostrarTudo() {
+        DBCursor cursor = collParecer.find();
+        while (cursor.hasNext()) {
+            //collParecer.remove(cursor.next());
+            System.out.println(cursor.next());
+        }
     }
 
     /**
@@ -106,13 +116,8 @@ public class PersistenciaParecer implements ParecerRepository {
         try {
             while (cursor.hasNext()) {
                 DBObject doc = cursor.next();
-                String id = (String) doc.get("id");
-                String resolucaoId = (String) doc.get("resolucaoId");
-                List<String> radocsIds = (ArrayList<String>) doc.get("radocs");
-                List<Pontuacao> pontuacoes = (ArrayList<Pontuacao>) doc.get("pontuacoes");
-                String fundamentacao = (String) doc.get("fundamentacao");
-                List<Nota> notas = (ArrayList<Nota>) doc.get("notas");
-                Parecer parecerTemp = new Parecer(id, resolucaoId, radocsIds, pontuacoes, fundamentacao, notas);
+                String json = doc.toString();
+                Parecer parecerTemp = gson.fromJson(json, Parecer.class);;
                 System.out.println(parecerTemp.getNotas());
                 parecer = parecerTemp;
             }
@@ -173,8 +178,7 @@ public class PersistenciaParecer implements ParecerRepository {
      */
     @Override
     public String persisteRadoc(Radoc radoc) {
-        Gson teste = new Gson();
-        String json = teste.toJson(radoc);
+        String json = gson.toJson(radoc);
         DBObject dbObject = (DBObject) JSON.parse(json);
         collRadoc.insert(dbObject);
         return radoc.getId();
@@ -230,13 +234,15 @@ public class PersistenciaParecer implements ParecerRepository {
         try {
             while (cursor.hasNext()) {
                 DBObject doc = cursor.next();
-                Gson gson = new Gson();
-                List<Nota> notas = (ArrayList<Nota>) doc.get("notas");
+                String json = doc.toString();
+                Parecer pare = gson.fromJson(json, Parecer.class);
+
+                List<Nota> notas = pare.getNotas();
                 System.out.println(notas.get(0));
                 for (int i = 0; i < notas.size(); i++) {
-                    Nota nota = gson.fromJson(notas.get(i).toString(), Nota.class);
+                    Nota nota = notas.get(i);
                     if (avlvl == nota.getItemOriginal() || avlvl == nota.getItemNovo()) {
-                        doc.removeField("noras");
+                        doc.removeField("notas");
                         notas.remove(i);
                         for (int p = 0; p < notas.size(); p++) {
                             adicionaNota(string, notas.get(p));

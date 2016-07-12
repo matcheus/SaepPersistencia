@@ -35,8 +35,9 @@ public class MainParecer {
         //salvarParecer();
         //adicionarNota();
         //removerRadoc();
-        //removerNota();
+        removerNota();
         //pesquisarRadocById();
+        persiste.mostrarTudo();
     }
 
     private static Parecer pesquisarParecerById() {
@@ -52,7 +53,7 @@ public class MainParecer {
     private static void salvarParecer() {
         List<Nota> notas = new ArrayList<>();
         String fundamentacao = "pq eu quis esse parecer";
-        for (int i = 0; i < 10; i++) {
+        for (int i = 50; i < 52; i++) {
             String id = Integer.toString(i);
             persiste.persisteParecer(new Parecer(id, "Id da Resolução", radocs, pontuacoes, fundamentacao, notas));
         }

@@ -38,7 +38,7 @@ public class MainResolucao {
         //removerResolucao();
         //salvarTipo();
         //removerTipo();
-        tipoPorCodigo();
+        //tipoPorCodigo();
         //tiposPeloNome();
         //resolucoes();
     }
