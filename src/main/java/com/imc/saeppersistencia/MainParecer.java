@@ -24,7 +24,6 @@ import java.util.Map;
 public class MainParecer {
 
     private static PersistenciaParecer persiste = new PersistenciaParecer();
-    private static CriarObjetos objeto = new CriarObjetos();
     private static List<Relato> relatos = new ArrayList<>();
     private static List<String> radocs = new ArrayList<>();
     private static List<Pontuacao> pontuacoes = new ArrayList<>();
@@ -56,7 +55,7 @@ public class MainParecer {
         String fundamentacao = "pq eu quis esse parecer";
         for (int i = 0; i < 10; i++) {
             String id = Integer.toString(i);
-            persiste.persisteParecer(objeto.criarParecer(id, "Id da Resolução", radocs, pontuacoes, fundamentacao, notas));
+            persiste.persisteParecer(new Parecer(id, "Id da Resolução", radocs, pontuacoes, fundamentacao, notas));
         }
     }
 
@@ -64,7 +63,7 @@ public class MainParecer {
         int anoBase = 2016;
         for (int i = 1080; i < 1083; i++) {
             String id = Integer.toString(i);
-            Radoc radoc = objeto.criarRadoc(id, anoBase, relatos);
+            Radoc radoc = new Radoc(id, anoBase, relatos);
             persiste.persisteRadoc(radoc);
             radocs.add(radoc.getId());
         }
@@ -73,15 +72,15 @@ public class MainParecer {
     private static void salvarRelato() {
         Map<String, Valor> valores = new HashMap(1);
         valores.put("ano", new Valor(2016));
-        relatos.add(objeto.criarRelato("relato1", valores));
-        relatos.add(objeto.criarRelato("relato2", valores));
-        relatos.add(objeto.criarRelato("relato3", valores));
+        relatos.add(new Relato("relato1", valores));
+        relatos.add(new Relato("relato2", valores));
+        relatos.add(new Relato("relato3", valores));
     }
 
     private static void salvarPontuacao() {
         for (int i = 0; i < 3; i++) {
             String atributo = "Atributo" + i;
-            pontuacoes.add(objeto.criarPontuacao(atributo, relatos.get(i).get("ano")));
+            pontuacoes.add(new Pontuacao(atributo, relatos.get(i).get("ano")));
         }
     }
 
@@ -89,7 +88,7 @@ public class MainParecer {
         String justificativa = "pq eu quis essa nota";
         Avaliavel origem = relatos.get(0);
         Avaliavel destino = relatos.get(1);
-        persiste.adicionaNota("7", objeto.criarNota(origem, destino, justificativa));
+        persiste.adicionaNota("7", new Nota(origem, destino, justificativa));
     }
 
     private static Radoc pesquisarRadocById() {
@@ -105,6 +104,6 @@ public class MainParecer {
         String id = "7";
         Map<String, Valor> valores = new HashMap(1);
         valores.put("ano", new Valor(2016));
-        persiste.removeNota(id, objeto.criarRelato("relato1", valores));
+        persiste.removeNota(id, new Relato("relato1", valores));
     }
 }

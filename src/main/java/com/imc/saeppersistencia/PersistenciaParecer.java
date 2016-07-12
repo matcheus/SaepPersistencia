@@ -18,6 +18,10 @@ import com.mongodb.util.JSON;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Matheus
+ */
 public class PersistenciaParecer implements ParecerRepository {
 
     MongoClient mongoClient = new MongoClient();
@@ -25,6 +29,11 @@ public class PersistenciaParecer implements ParecerRepository {
     DBCollection collParecer = db.getCollection("Pareceres");
     DBCollection collRadoc = db.getCollection("Radocs");
 
+    /**
+     *
+     * @param string
+     * @param nota
+     */
     @Override
     public void adicionaNota(String string, Nota nota) {
         Gson teste = new Gson();
@@ -40,6 +49,10 @@ public class PersistenciaParecer implements ParecerRepository {
         collParecer.update(doc, updateQuery);
     }
 
+    /**
+     *
+     * @param prcr
+     */
     @Override
     public void persisteParecer(Parecer prcr) {
         BasicDBObject query = new BasicDBObject("id", prcr.getId());
@@ -64,6 +77,11 @@ public class PersistenciaParecer implements ParecerRepository {
 
     }
 
+    /**
+     *
+     * @param string
+     * @param string1
+     */
     @Override
     public void atualizaFundamentacao(String string, String string1) {
         BasicDBObject novaFundamentacao = new BasicDBObject();
@@ -75,6 +93,11 @@ public class PersistenciaParecer implements ParecerRepository {
         collParecer.update(doc, novaFundamentacao);
     }
 
+    /**
+     *
+     * @param string
+     * @return
+     */
     @Override
     public Parecer byId(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -99,6 +122,10 @@ public class PersistenciaParecer implements ParecerRepository {
         return parecer;
     }
 
+    /**
+     *
+     * @param string
+     */
     @Override
     public void removeParecer(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -113,6 +140,11 @@ public class PersistenciaParecer implements ParecerRepository {
         }
     }
 
+    /**
+     *
+     * @param string
+     * @return
+     */
     @Override
     public Radoc radocById(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -134,6 +166,11 @@ public class PersistenciaParecer implements ParecerRepository {
         return radoc;
     }
 
+    /**
+     *
+     * @param radoc
+     * @return
+     */
     @Override
     public String persisteRadoc(Radoc radoc) {
         Gson teste = new Gson();
@@ -143,6 +180,10 @@ public class PersistenciaParecer implements ParecerRepository {
         return radoc.getId();
     }
 
+    /**
+     *
+     * @param string
+     */
     @Override
     public void removeRadoc(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -177,6 +218,9 @@ public class PersistenciaParecer implements ParecerRepository {
         }
     }
 
+    /**
+     *
+     */
     public void mostrarTudo() {
         DBCursor cursor = collParecer.find();
         while (cursor.hasNext()) {
@@ -185,6 +229,11 @@ public class PersistenciaParecer implements ParecerRepository {
         }
     }
 
+    /**
+     *
+     * @param string
+     * @param avlvl
+     */
     @Override
     public void removeNota(String string, Avaliavel avlvl) {
         BasicDBObject query = new BasicDBObject("id", string);

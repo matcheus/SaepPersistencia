@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NavigableSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  *
@@ -28,15 +26,20 @@ public class MainResolucao {
     private static PersistenciaResolucao persiste = new PersistenciaResolucao();
     private static List<Regra> regras = new ArrayList<>();
 
+    /**
+     *
+     * @param args
+     * @throws ParseException
+     */
     public static void main(String[] args) throws ParseException {
         //criarRegra();
         //salvarResolucao();
         //resolucaoById();
         //removerResolucao();
-        salvarTipo();
+        //salvarTipo();
         //removerTipo();
         //tipoPorCodigo();
-        persiste.mostrarTudo();
+        //persiste.mostrarTudo();
     }
 
     private static void salvarResolucao() throws ParseException {

@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +39,9 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     DBCollection collResolucao = db.getCollection("Resoluções");
     DBCollection collTipo = db.getCollection("Tipos");
 
+    /**
+     *
+     */
     public void mostrarTudo() {
         DBCursor cursor = collTipo.find();
         while (cursor.hasNext()) {
@@ -48,6 +50,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         }
     }
 
+    /**
+     *
+     * @param string
+     * @return
+     */
     @Override
     public Resolucao byId(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -75,6 +82,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         return resolucao;
     }
 
+    /**
+     *
+     * @param rslc
+     * @return
+     */
     @Override
     public String persiste(Resolucao rslc) {
         BasicDBObject query = new BasicDBObject("id", rslc.getId());
@@ -104,6 +116,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         }
     }
 
+    /**
+     *
+     * @param string
+     * @return
+     */
     @Override
     public boolean remove(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -119,6 +136,10 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<String> resolucoes() {
         DBCursor cursor = collResolucao.find();
@@ -130,6 +151,10 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         return resolucoes;
     }
 
+    /**
+     *
+     * @param tipo
+     */
     @Override
     public void persisteTipo(Tipo tipo) {
         BasicDBObject query = new BasicDBObject("id", tipo.getId());
@@ -145,15 +170,16 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             String json = teste.toJson(tipo);
             DBObject dbObject = (DBObject) JSON.parse(json);
             collTipo.insert(dbObject);
-            String texto = "deu tudo certo";
-            System.out.println(texto);
             cursor.close();
         }else{
-            System.out.println("ja tem");
             cursor.close();
         }
     }
 
+    /**
+     *
+     * @param string
+     */
     @Override
     public void removeTipo(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -168,6 +194,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         }
     }
 
+    /**
+     *
+     * @param string
+     * @return
+     */
     @Override
     public Tipo tipoPeloCodigo(String string) {
         BasicDBObject query = new BasicDBObject("id", string);
@@ -186,6 +217,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         return tipo;
     }
 
+    /**
+     *
+     * @param string
+     * @return
+     */
     @Override
     public List<Tipo> tiposPeloNome(String string) {
         DBCursor cursor = collResolucao.find();

@@ -3,9 +3,7 @@ package com.imc.saeppersistencia;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.util.JSON;
 
 /**
  *
@@ -18,6 +16,10 @@ public class CriarCollections {
     private DB db = mongoClient.getDB("saep");
     private DBCollection collPersist; 
 
+    /**
+     *
+     * @param nome
+     */
     public CriarCollections(String nome) {
         this.nome = nome;
         criarColl();
@@ -30,14 +32,26 @@ public class CriarCollections {
         collPersist = coll;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     *
+     * @param nome
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    /**
+     *
+     * @return
+     */
     public DBCollection getColl() {
         return collPersist;
     }
