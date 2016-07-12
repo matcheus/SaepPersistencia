@@ -41,17 +41,6 @@ public class PersistenciaResolucao implements ResolucaoRepository {
 
     /**
      *
-     */
-    public void mostrarTudo() {
-        DBCursor cursor = collTipo.find();
-        while (cursor.hasNext()) {
-            //collResolucao.remove(cursor.next());
-            System.out.println(cursor.next());
-        }
-    }
-
-    /**
-     *
      * @param string
      * @return
      */
@@ -92,9 +81,9 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         BasicDBObject query = new BasicDBObject("id", rslc.getId());
         DBCursor cursor = collResolucao.find(query);
         boolean pode;
-        if (cursor.hasNext() == false){
+        if (cursor.hasNext() == false) {
             pode = true;
-        }else{
+        } else {
             pode = false;
         }
         if (pode == true) {
@@ -109,7 +98,7 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             String mensagem = "Resolução salva com sucesso!";
             cursor.close();
             return mensagem;
-        }else{
+        } else {
             String mensagem = "Não foi possivel salvar a resolução, pois ja existe uma com esse Id";
             cursor.close();
             return mensagem;
@@ -146,7 +135,7 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         List<String> resolucoes = new ArrayList<>();
         while (cursor.hasNext()) {
             DBObject doc = cursor.next();
-            resolucoes.add((String)doc.get("id"));
+            resolucoes.add((String) doc.get("id"));
         }
         return resolucoes;
     }
@@ -160,9 +149,9 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         BasicDBObject query = new BasicDBObject("id", tipo.getId());
         DBCursor cursor = collTipo.find(query);
         boolean pode;
-        if (cursor.hasNext() == false){
+        if (cursor.hasNext() == false) {
             pode = true;
-        }else{
+        } else {
             pode = false;
         }
         if (pode == true) {
@@ -171,7 +160,7 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             DBObject dbObject = (DBObject) JSON.parse(json);
             collTipo.insert(dbObject);
             cursor.close();
-        }else{
+        } else {
             cursor.close();
         }
     }

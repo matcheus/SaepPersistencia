@@ -41,7 +41,6 @@ public class MainResolucao {
         //tipoPorCodigo();
         //tiposPeloNome();
         //resolucoes();
-        //persiste.mostrarTudo();
     }
 
     private static void salvarResolucao() throws ParseException {

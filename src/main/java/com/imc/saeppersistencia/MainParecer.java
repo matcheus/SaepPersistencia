@@ -36,7 +36,6 @@ public class MainParecer {
         //adicionarNota();
         //removerRadoc();
         //removerNota();
-        //persiste.mostrarTudo();
         //pesquisarRadocById();
     }
 

@@ -70,7 +70,7 @@ public class PersistenciaParecer implements ParecerRepository {
             collParecer.insert(dbObject);
             cursor.close();
             System.out.println("pode");
-        }else{
+        } else {
             cursor.close();
             System.out.println("n pode");
         }
@@ -215,17 +215,6 @@ public class PersistenciaParecer implements ParecerRepository {
             }
         } finally {
             cursor.close();
-        }
-    }
-
-    /**
-     *
-     */
-    public void mostrarTudo() {
-        DBCursor cursor = collParecer.find();
-        while (cursor.hasNext()) {
-            //collParecer.remove(cursor.next());
-            System.out.println(cursor.next());
         }
     }
 
