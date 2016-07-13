@@ -1,5 +1,5 @@
 
-package com.imc.saeppersistencia;
+package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
@@ -115,7 +115,9 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             String mensagem = rslc.getId();
             cursor.close();
             return mensagem;
-        } else {
+        }
+        
+        else {
             String mensagem = rslc.getId();
             cursor.close();
             return mensagem;
@@ -182,16 +184,21 @@ public class PersistenciaResolucao implements ResolucaoRepository {
         boolean pode;
         if (cursor.hasNext() == false) {
             pode = true;
-        } else {
+        }
+        
+        else {
             pode = false;
         }
+        
         if (pode == true) {
             Gson gson = new Gson();
             String json = gson.toJson(tipo);
             DBObject dbObject = (DBObject) JSON.parse(json);
             collTipo.insert(dbObject);
             cursor.close();
-        } else {
+        }
+        
+        else {
             cursor.close();
         }
     }

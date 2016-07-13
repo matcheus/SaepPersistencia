@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.imc.saeppersistencia;
+package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
 import br.ufg.inf.es.saep.sandbox.dominio.Atributo;
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;

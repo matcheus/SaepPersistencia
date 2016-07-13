@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.imc.saeppersistencia;
+package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
 import br.ufg.inf.es.saep.sandbox.dominio.Avaliavel;
 import br.ufg.inf.es.saep.sandbox.dominio.Nota;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  *
@@ -37,6 +38,7 @@ public class MainParecer {
         //removerRadoc();
         removerNota();
         //pesquisarRadocById();
+        persiste.mostrarTudo();
     }
 
     private static Parecer pesquisarParecerById() {
@@ -84,25 +86,38 @@ public class MainParecer {
     }
 
     private static void adicionarNota() {
-        String justificativa = "pq eu quis essa nota";
-        Avaliavel origem = relatos.get(0);
-        Avaliavel destino = relatos.get(1);
-        persiste.adicionaNota("7", new Nota(origem, destino, justificativa));
+        String atributo = UUID.randomUUID().toString();
+        Valor valor = new Valor(true);
+        Avaliavel original = new Pontuacao(atributo, valor);
+        Valor valorBoole = new Valor(true);
+        Map<String, Valor> map = new HashMap<>();
+        map.put("Chave", valorBoole);
+        String atributo2 = UUID.randomUUID().toString();
+        Avaliavel destino = new Relato(atributo2, map);
+        String id = "5";
+        persiste.adicionaNota(id, new Nota(original, destino, "descrição da nota"));
     }
 
     private static Radoc pesquisarRadocById() {
         return persiste.radocById("1080");
     }
-    
+
     private static void removerRadoc() {
         String id = "1044";
         persiste.removeRadoc(id);
     }
-    
+
     private static void removerNota() {
-        String id = "7";
-        Map<String, Valor> valores = new HashMap(1);
-        valores.put("ano", new Valor(2016));
-        persiste.removeNota(id, new Relato("relato1", valores));
+        String id = "5";
+        String atributo = "5839f09e-4679-417b-9fae-12eb44b0ed47";
+        Valor valor = new Valor(true);
+        Avaliavel original = new Pontuacao(atributo, valor);
+        Valor valorBoole = new Valor(true);
+        Map<String, Valor> map = new HashMap<>();
+        map.put("Chave", valorBoole);
+        String atributo2 = UUID.randomUUID().toString();
+        Avaliavel destino = new Relato(atributo2, map);
+        Nota nota = new Nota(original, destino, "descrição da nota");
+        persiste.removeNota(id, nota.getItemOriginal());
     }
 }

@@ -1,4 +1,4 @@
-package com.imc.saeppersistencia;
+package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;

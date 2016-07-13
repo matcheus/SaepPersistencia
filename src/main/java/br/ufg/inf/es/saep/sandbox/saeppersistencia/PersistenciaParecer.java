@@ -1,4 +1,4 @@
-package com.imc.saeppersistencia;
+package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
 import br.ufg.inf.es.saep.sandbox.dominio.Avaliavel;
 import br.ufg.inf.es.saep.sandbox.dominio.Nota;
@@ -55,8 +55,8 @@ public class PersistenciaParecer implements ParecerRepository {
         BasicDBObject query = new BasicDBObject("id", string);
         DBCursor cursor = collParecer.find(query);
         DBObject doc = cursor.next();
-        DBObject updateQuery = new BasicDBObject("$push", listItem);
-        collParecer.update(doc, updateQuery);
+        //DBObject updateQuery = new BasicDBObject("$push", listItem);
+        //collParecer.update(doc, updateQuery);
     }
 
     /**
@@ -79,9 +79,9 @@ public class PersistenciaParecer implements ParecerRepository {
         } else {
             pode = false;
         }
+        
         if (pode == true) {
-            Gson teste = new Gson();
-            String json = teste.toJson(prcr);
+            String json = gson.toJson(prcr);
             DBObject dbObject = (DBObject) JSON.parse(json);
             collParecer.insert(dbObject);
             cursor.close();
@@ -90,7 +90,6 @@ public class PersistenciaParecer implements ParecerRepository {
             cursor.close();
             System.out.println("n pode");
         }
-
     }
 
     /**
@@ -261,13 +260,16 @@ public class PersistenciaParecer implements ParecerRepository {
                     }
                 }
             }
+            
             while (cursor.hasNext()) {
 
                 if (pode == true) {
                     DBObject doc = cursor.next();
                     collRadoc.remove(doc);
                     System.out.println("Radoc " + doc.get("id") + " removido com sucesso");
-                } else {
+                }
+                
+                else {
                     System.out.println("Radoc n pode ser removido");
                     break;
                 }
@@ -298,12 +300,13 @@ public class PersistenciaParecer implements ParecerRepository {
                 List<Nota> notas = pare.getNotas();
                 for (int i = 0; i < notas.size(); i++) {
                     Nota nota = notas.get(i);
-                    if (avlvl.equals(nota.getItemOriginal()) || avlvl.equals(nota.getItemNovo())) {
+                    if (avlvl.equals(nota.getItemOriginal())) {
                         doc.removeField("notas");
                         notas.remove(i);
                         for (int p = 0; p < notas.size(); p++) {
                             adicionaNota(string, notas.get(p));
                         }
+                        
                     } else {
                         break;
                     }
@@ -315,4 +318,11 @@ public class PersistenciaParecer implements ParecerRepository {
         }
     }
 
+    public void mostrarTudo() {
+        DBCursor cursor = collParecer.find();
+        while (cursor.hasNext()) {
+            //collParecer.remove(cursor.next());
+            System.out.println(cursor.next());
+        }
+    }
 }

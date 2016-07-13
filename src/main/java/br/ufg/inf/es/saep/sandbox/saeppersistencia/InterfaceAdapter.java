@@ -1,4 +1,4 @@
-package com.imc.saeppersistencia;
+package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
