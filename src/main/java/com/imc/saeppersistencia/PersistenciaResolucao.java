@@ -112,11 +112,11 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             BasicDBObject newDocument = new BasicDBObject();
             newDocument.append("$set", new BasicDBObject().append("dataAprovacao", dt.format(rslc.getDataAprovacao())));
             collResolucao.update(dbObject, newDocument);
-            String mensagem = "Resolução salva com sucesso!";
+            String mensagem = rslc.getId();
             cursor.close();
             return mensagem;
         } else {
-            String mensagem = "Não foi possivel salvar a resolução, pois ja existe uma com esse Id";
+            String mensagem = rslc.getId();
             cursor.close();
             return mensagem;
         }

@@ -296,18 +296,15 @@ public class PersistenciaParecer implements ParecerRepository {
                 String json = doc.toString();
                 Parecer pare = gson.fromJson(json, Parecer.class);
                 List<Nota> notas = pare.getNotas();
-                System.out.println(notas.get(0));
                 for (int i = 0; i < notas.size(); i++) {
                     Nota nota = notas.get(i);
-                    if (avlvl == nota.getItemOriginal() || avlvl == nota.getItemNovo()) {
+                    if (avlvl.equals(nota.getItemOriginal()) || avlvl.equals(nota.getItemNovo())) {
                         doc.removeField("notas");
                         notas.remove(i);
                         for (int p = 0; p < notas.size(); p++) {
                             adicionaNota(string, notas.get(p));
                         }
-                        System.out.println("Nota removida com sucesso");
                     } else {
-                        System.out.println("Nota n encontrada");
                         break;
                     }
                 }
