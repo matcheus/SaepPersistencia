@@ -117,8 +117,6 @@ public class ObjectCreator {
         for (int i = 0; i < 2; i++) {
             atributos.add(new Atributo(String.valueOf(i), "Descrição do atributo", 1));
         }
-        String nomeFinal = nome + id;
-        System.out.println(nomeFinal);
-        return new Tipo(id, nomeFinal, "Descrição do tipo", atributos);
+        return new Tipo(id, nome, "Descrição do tipo", atributos);
     }
 }

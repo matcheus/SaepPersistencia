@@ -63,7 +63,6 @@ public class PersistenciaResolucao implements ResolucaoRepository {
             }
             List<Regra> regras = (ArrayList<Regra>) doc.get("regras");
             Resolucao resolucaoTemp = new Resolucao(idRadoc, nome, descricao, dataAprovacao, regras);
-            System.out.println(resolucaoTemp.getDataAprovacao());
             resolucao = resolucaoTemp;
         }
         cursor.close();
@@ -251,7 +250,7 @@ public class PersistenciaResolucao implements ResolucaoRepository {
     @Override
     public List<Tipo> tiposPeloNome(String nome) {
         BasicDBObject query = new BasicDBObject("nome", nome);
-        DBCursor cursor = collResolucao.find(query);
+        DBCursor cursor = collTipo.find(query);
         List<Tipo> tipos = new ArrayList<>();
         Gson gson = new Gson();
         while (cursor.hasNext()) {

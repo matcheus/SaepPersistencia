@@ -15,7 +15,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -110,16 +109,14 @@ public class PersistenciaResolucaoTest {
     @Test
     public void testTiposPeloNome() {
         System.out.println("tiposPeloNome");
-        List<Tipo> tiposAProcurar = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            String idTipo = String.valueOf(i);
+            String idTipo = UUID.randomUUID().toString();
             Tipo tipo = objeto.criarTipo(idTipo, "tipo");
             persistencia.persisteTipo(tipo);
-            tiposAProcurar.add(tipo);
         }
-        List<Tipo> tipos = persistencia.tiposPeloNome("tipo0");
+        List<Tipo> tipos = persistencia.tiposPeloNome("tipo");
         Assert.assertNotNull("Tipos não foram encontrados.", tipos);
-        Assert.assertFalse("Não foram encontrados tipos.", tipos.size() > 0);
+        Assert.assertTrue("Não foram encontrados tipos.", tipos.size() > 0);
     }
 
 }

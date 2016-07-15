@@ -163,7 +163,6 @@ public class PersistenciaParecerTest {
         persistencia.adicionaNota(id, notaNova);
         Parecer parecerAtualizado = persistencia.byId(id);
         boolean tst;
-        System.out.println(parecerAtualizado.getNotas().size());
         if (parecerAtualizado.getNotas().size() == 2) {
             tst = false;
         } 

@@ -34,15 +34,15 @@ public class PersistenciaParecer implements ParecerRepository {
 
     /**
      * Adiciona nota ao parecer. Caso a nota a ser acrescentada se refira a um
-     * item {@link Avaliavel} para o qual já exista uma nota, então a corrente
+     * item {@link Avaliavel} para o qual jÃ¡ exista uma nota, entÃ£o a corrente
      * substitui a anterior.
      *
-     * @throws IdentificadorDesconhecido Caso o identificador fornecido não
+     * @throws IdentificadorDesconhecido Caso o identificador fornecido nÃ£o
      * identifique um parecer existente.
      *
-     * @param id O identificador único do parecer.
+     * @param id O identificador Ãºnico do parecer.
      *
-     * @param nota A alteração a ser acrescentada ao pareder.
+     * @param nota A alteraÃ§Ã£o a ser acrescentada ao pareder.
      */
     @Override
     public void adicionaNota(String id, Nota nota) {
@@ -59,10 +59,10 @@ public class PersistenciaParecer implements ParecerRepository {
     }
 
     /**
-     * Acrescenta o parecer ao repositório.
+     * Acrescenta o parecer ao repositÃ³rio.
      *
      * @throws IdentificadorExistente Caso o identificador seja empregado por
-     * parecer existente (já persistido).
+     * parecer existente (jÃ¡ persistido).
      *
      * @param parecer O parecer a ser persistido.
      *
@@ -93,22 +93,22 @@ public class PersistenciaParecer implements ParecerRepository {
     }
 
     /**
-     * Altera a fundamentação do parecer.
+     * Altera a fundamentaÃ§Ã£o do parecer.
      *
      * <p>
-     * Fundamentação é o texto propriamente dito do parecer. Não confunda com as
-     * alterações de valores (dados de relatos ou de pontuações).
+     * FundamentaÃ§Ã£o Ã© o texto propriamente dito do parecer. NÃ£o confunda com as
+     * alteraÃ§Ãµes de valores (dados de relatos ou de pontuaÃ§Ãµes).
      *
      * <p>
-     * Após a chamada a esse método, o parecer alterado pode ser recuperado pelo
-     * método {@link #byId(String)}. Observe que uma instância disponível antes
-     * dessa chamada torna-se "inválida".
+     * ApÃ³s a chamada a esse mÃ©todo, o parecer alterado pode ser recuperado pelo
+     * mÃ©todo {@link #byId(String)}. Observe que uma instÃ¢ncia disponÃ­vel antes
+     * dessa chamada torna-se "invÃ¡lida".
      *
-     * @throws IdentificadorDesconhecido Caso o identificador fornecido não
+     * @throws IdentificadorDesconhecido Caso o identificador fornecido nÃ£o
      * identifique um parecer.
      *
-     * @param parecer O identificador único do parecer.
-     * @param fundamentacao Novo texto da fundamentação do parecer.
+     * @param parecer O identificador Ãºnico do parecer.
+     * @param fundamentacao Novo texto da fundamentaÃ§Ã£o do parecer.
      */
     @Override
     public void atualizaFundamentacao(String parecer, String fundamentacao) {
@@ -127,7 +127,7 @@ public class PersistenciaParecer implements ParecerRepository {
      * @param id O identificador do parecer.
      *
      * @return O parecer recuperado ou o valor {@code null}, caso o
-     * identificador não defina um parecer.
+     * identificador nÃ£o defina um parecer.
      */
     @Override
     public Parecer byId(String id) {
@@ -139,7 +139,6 @@ public class PersistenciaParecer implements ParecerRepository {
                 DBObject doc = cursor.next();
                 String json = doc.toString();
                 Parecer parecerTemp = gson.fromJson(json, Parecer.class);;
-                System.out.println(parecerTemp.getNotas());
                 parecer = parecerTemp;
             }
         } finally {
@@ -152,10 +151,10 @@ public class PersistenciaParecer implements ParecerRepository {
      * Remove o parecer.
      *
      * <p>
-     * Se o identificador fornecido é inválido ou não correspondente a um
-     * parecer existente, nenhuma situação excepcional é gerada.
+     * Se o identificador fornecido Ã© invÃ¡lido ou nÃ£o correspondente a um
+     * parecer existente, nenhuma situaÃ§Ã£o excepcional Ã© gerada.
      *
-     * @param id O identificador único do parecer.
+     * @param id O identificador Ãºnico do parecer.
      */
     @Override
     public void removeParecer(String id) {
@@ -174,7 +173,7 @@ public class PersistenciaParecer implements ParecerRepository {
     /**
      * Recupera o RADOC identificado pelo argumento.
      *
-     * @param identificador O identificador único do RADOC.
+     * @param identificador O identificador Ãºnico do RADOC.
      *
      * @return O {@code Radoc} correspondente ao identificador fornecido.
      */
@@ -202,9 +201,9 @@ public class PersistenciaParecer implements ParecerRepository {
      * Conjunto de relatos de atividades e produtos associados a um docente.
      *
      * <p>
-     * Um conjunto de relatos é extraído de fonte externa de informação. Uma
-     * cópia é mantida pelo SAEP para consistência de pareceres efetuados ao
-     * longo do tempo. Convém ressaltar que informações desses relatórios podem
+     * Um conjunto de relatos Ã© extraÃ­do de fonte externa de informaÃ§Ã£o. Uma
+     * cÃ³pia Ã© mantida pelo SAEP para consistÃªncia de pareceres efetuados ao
+     * longo do tempo. ConvÃ©m ressaltar que informaÃ§Ãµes desses relatÃ³rios podem
      * ser alteradas continuamente.
      *
      * @throws IdentificadorExistente Caso o identificador do objeto a ser
@@ -212,7 +211,7 @@ public class PersistenciaParecer implements ParecerRepository {
      *
      * @param radoc O conjunto de relatos a ser persistido.
      *
-     * @return O identificador único do RADOC.
+     * @return O identificador Ãºnico do RADOC.
      */
     @Override
     public String persisteRadoc(Radoc radoc) {
@@ -226,15 +225,15 @@ public class PersistenciaParecer implements ParecerRepository {
      * Remove o RADOC.
      *
      * <p>
-     * Após essa operação o RADOC correspondente não estará disponível para
+     * ApÃ³s essa operaÃ§Ã£o o RADOC correspondente nÃ£o estarÃ¡ disponÃ­vel para
      * consulta.
      *
      * <p>
-     * Não é permitida a remoção de um RADOC para o qual há pelo menos um
+     * NÃ£o Ã© permitida a remoÃ§Ã£o de um RADOC para o qual hÃ¡ pelo menos um
      * parecer referenciando-o.
      *
      * @throws ExisteParecerReferenciandoRadoc Caso exista pelo menos um parecer
-     * que faz referência para o RADOC cuja remoção foi requisitada.
+     * que faz referÃªncia para o RADOC cuja remoÃ§Ã£o foi requisitada.
      *
      * @param identificador O identificador do RADOC.
      */
@@ -275,10 +274,10 @@ public class PersistenciaParecer implements ParecerRepository {
     }
 
     /**
-     * Remove a nota cujo item {@link Avaliavel} original é fornedido.
+     * Remove a nota cujo item {@link Avaliavel} original Ã© fornedido.
      *
-     * @param id O identificador único do parecer.
-     * @param original Instância de {@link Avaliavel} que participa da
+     * @param id O identificador Ãºnico do parecer.
+     * @param original InstÃ¢ncia de {@link Avaliavel} que participa da
      * {@link Nota} a ser removida como origem.
      *
      */
