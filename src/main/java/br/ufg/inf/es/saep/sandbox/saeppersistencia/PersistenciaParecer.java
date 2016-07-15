@@ -33,92 +33,92 @@ public class PersistenciaParecer implements ParecerRepository {
             .create();
 
     /**
-     * Adiciona nota ao parecer. Caso a nota a ser acrescentada
-     * se refira a um item {@link Avaliavel} para o qual já
-     * exista uma nota, então a corrente substitui a anterior.
+     * Adiciona nota ao parecer. Caso a nota a ser acrescentada se refira a um
+     * item {@link Avaliavel} para o qual já exista uma nota, então a corrente
+     * substitui a anterior.
      *
-     * @throws IdentificadorDesconhecido Caso o identificador
-     * fornecido não identifique um parecer existente.
+     * @throws IdentificadorDesconhecido Caso o identificador fornecido não
+     * identifique um parecer existente.
      *
      * @param id O identificador único do parecer.
      *
-     * @param nota A alteração a ser acrescentada ao
-     * pareder.
+     * @param nota A alteração a ser acrescentada ao pareder.
      */
     @Override
-    public void adicionaNota(String string, Nota nota) {
+    public void adicionaNota(String id, Nota nota) {
         String json = gson.toJson(nota);
         DBObject dbObject = (DBObject) JSON.parse(json);
 
         BasicDBObject listItem = new BasicDBObject().append("notas", dbObject);
 
-        BasicDBObject query = new BasicDBObject("id", string);
+        BasicDBObject query = new BasicDBObject("id", id);
         DBCursor cursor = collParecer.find(query);
         DBObject doc = cursor.next();
-        //DBObject updateQuery = new BasicDBObject("$push", listItem);
-        //collParecer.update(doc, updateQuery);
+        DBObject updateQuery = new BasicDBObject("$push", listItem);
+        collParecer.update(doc, updateQuery);
     }
 
     /**
      * Acrescenta o parecer ao repositório.
      *
-     * @throws IdentificadorExistente Caso o
-     * identificador seja empregado por parecer
-     * existente (já persistido).
+     * @throws IdentificadorExistente Caso o identificador seja empregado por
+     * parecer existente (já persistido).
      *
      * @param parecer O parecer a ser persistido.
      *
      */
     @Override
-    public void persisteParecer(Parecer prcr) {
-        BasicDBObject query = new BasicDBObject("id", prcr.getId());
+    public void persisteParecer(Parecer parecer) {
+        BasicDBObject query = new BasicDBObject("id", parecer.getId());
         DBCursor cursor = collParecer.find(query);
         boolean pode;
         if (cursor.hasNext() == false) {
             pode = true;
-        } else {
+        } 
+        
+        else {
             pode = false;
         }
-        
+
         if (pode == true) {
-            String json = gson.toJson(prcr);
+            String json = gson.toJson(parecer);
             DBObject dbObject = (DBObject) JSON.parse(json);
             collParecer.insert(dbObject);
             cursor.close();
-            System.out.println("pode");
-        } else {
+        } 
+        
+        else {
             cursor.close();
-            System.out.println("n pode");
         }
     }
 
     /**
      * Altera a fundamentação do parecer.
      *
-     * <p>Fundamentação é o texto propriamente dito do
-     * parecer. Não confunda com as alterações de
-     * valores (dados de relatos ou de pontuações).
+     * <p>
+     * Fundamentação é o texto propriamente dito do parecer. Não confunda com as
+     * alterações de valores (dados de relatos ou de pontuações).
      *
-     * <p>Após a chamada a esse método, o parecer alterado
-     * pode ser recuperado pelo método {@link #byId(String)}.
-     * Observe que uma instância disponível antes dessa chamada
-     * torna-se "inválida".
+     * <p>
+     * Após a chamada a esse método, o parecer alterado pode ser recuperado pelo
+     * método {@link #byId(String)}. Observe que uma instância disponível antes
+     * dessa chamada torna-se "inválida".
      *
-     * @throws IdentificadorDesconhecido Caso o identificador
-     * fornecido não identifique um parecer.
+     * @throws IdentificadorDesconhecido Caso o identificador fornecido não
+     * identifique um parecer.
      *
      * @param parecer O identificador único do parecer.
      * @param fundamentacao Novo texto da fundamentação do parecer.
      */
     @Override
-    public void atualizaFundamentacao(String string, String string1) {
+    public void atualizaFundamentacao(String parecer, String fundamentacao) {
         BasicDBObject novaFundamentacao = new BasicDBObject();
-        novaFundamentacao.append("$set", new BasicDBObject().append("fundamentacao", string1));
-        BasicDBObject query = new BasicDBObject("id", string);
+        novaFundamentacao.append("$set", new BasicDBObject().append("fundamentacao", fundamentacao));
+        BasicDBObject query = new BasicDBObject("id", parecer);
         DBCursor cursor = collParecer.find(query);
-        System.out.println(cursor.next());
-        BasicDBObject doc = new BasicDBObject().append("id", string);
+        BasicDBObject doc = new BasicDBObject().append("id", parecer);
         collParecer.update(doc, novaFundamentacao);
+        cursor.close();
     }
 
     /**
@@ -126,12 +126,12 @@ public class PersistenciaParecer implements ParecerRepository {
      *
      * @param id O identificador do parecer.
      *
-     * @return O parecer recuperado ou o valor {@code null},
-     * caso o identificador não defina um parecer.
+     * @return O parecer recuperado ou o valor {@code null}, caso o
+     * identificador não defina um parecer.
      */
     @Override
-    public Parecer byId(String string) {
-        BasicDBObject query = new BasicDBObject("id", string);
+    public Parecer byId(String id) {
+        BasicDBObject query = new BasicDBObject("id", id);
         DBCursor cursor = collParecer.find(query);
         Parecer parecer = null;
         try {
@@ -151,15 +151,15 @@ public class PersistenciaParecer implements ParecerRepository {
     /**
      * Remove o parecer.
      *
-     * <p>Se o identificador fornecido é inválido
-     * ou não correspondente a um parecer existente,
-     * nenhuma situação excepcional é gerada.
+     * <p>
+     * Se o identificador fornecido é inválido ou não correspondente a um
+     * parecer existente, nenhuma situação excepcional é gerada.
      *
      * @param id O identificador único do parecer.
      */
     @Override
-    public void removeParecer(String string) {
-        BasicDBObject query = new BasicDBObject("id", string);
+    public void removeParecer(String id) {
+        BasicDBObject query = new BasicDBObject("id", id);
         DBCursor cursor = collParecer.find(query);
         try {
             while (cursor.hasNext()) {
@@ -174,15 +174,13 @@ public class PersistenciaParecer implements ParecerRepository {
     /**
      * Recupera o RADOC identificado pelo argumento.
      *
-     * @param identificador O identificador único do
-     *                      RADOC.
+     * @param identificador O identificador único do RADOC.
      *
-     * @return O {@code Radoc} correspondente ao
-     * identificador fornecido.
+     * @return O {@code Radoc} correspondente ao identificador fornecido.
      */
     @Override
-    public Radoc radocById(String string) {
-        BasicDBObject query = new BasicDBObject("id", string);
+    public Radoc radocById(String identificador) {
+        BasicDBObject query = new BasicDBObject("id", identificador);
         DBCursor cursor = collRadoc.find(query);
         Radoc radoc = null;
         try {
@@ -192,7 +190,6 @@ public class PersistenciaParecer implements ParecerRepository {
                 int anoBase = (int) doc.get("anoBase");
                 List<Relato> relatos = (ArrayList<Relato>) doc.get("relatos");
                 Radoc radocTemp = new Radoc(id, anoBase, relatos);
-                System.out.println(radocTemp.getId());
                 radoc = radocTemp;
             }
         } finally {
@@ -202,18 +199,16 @@ public class PersistenciaParecer implements ParecerRepository {
     }
 
     /**
-     * Conjunto de relatos de atividades e produtos
-     * associados a um docente.
+     * Conjunto de relatos de atividades e produtos associados a um docente.
      *
-     * <p>Um conjunto de relatos é extraído de fonte
-     * externa de informação. Uma cópia é mantida pelo
-     * SAEP para consistência de pareceres efetuados ao
-     * longo do tempo. Convém ressaltar que informações
-     * desses relatórios podem ser alteradas continuamente.
+     * <p>
+     * Um conjunto de relatos é extraído de fonte externa de informação. Uma
+     * cópia é mantida pelo SAEP para consistência de pareceres efetuados ao
+     * longo do tempo. Convém ressaltar que informações desses relatórios podem
+     * ser alteradas continuamente.
      *
-     * @throws IdentificadorExistente Caso o identificador
-     * do objeto a ser persistido seja empregado por
-     * RADOC existente.
+     * @throws IdentificadorExistente Caso o identificador do objeto a ser
+     * persistido seja empregado por RADOC existente.
      *
      * @param radoc O conjunto de relatos a ser persistido.
      *
@@ -230,21 +225,22 @@ public class PersistenciaParecer implements ParecerRepository {
     /**
      * Remove o RADOC.
      *
-     * <p>Após essa operação o RADOC correspondente não
-     * estará disponível para consulta.
+     * <p>
+     * Após essa operação o RADOC correspondente não estará disponível para
+     * consulta.
      *
-     * <p>Não é permitida a remoção de um RADOC para o qual
-     * há pelo menos um parecer referenciando-o.
+     * <p>
+     * Não é permitida a remoção de um RADOC para o qual há pelo menos um
+     * parecer referenciando-o.
      *
-     * @throws ExisteParecerReferenciandoRadoc Caso exista pelo
-     * menos um parecer que faz referência para o RADOC cuja
-     * remoção foi requisitada.
+     * @throws ExisteParecerReferenciandoRadoc Caso exista pelo menos um parecer
+     * que faz referência para o RADOC cuja remoção foi requisitada.
      *
      * @param identificador O identificador do RADOC.
      */
     @Override
-    public void removeRadoc(String string) {
-        BasicDBObject query = new BasicDBObject("id", string);
+    public void removeRadoc(String identificador) {
+        BasicDBObject query = new BasicDBObject("id", identificador);
         DBCursor cursor = collRadoc.find(query);
         DBCursor cursorParecer = collParecer.find();
         boolean pode = true;
@@ -253,24 +249,23 @@ public class PersistenciaParecer implements ParecerRepository {
                 DBObject doc = cursorParecer.next();
                 List<String> radocsIds = (ArrayList<String>) doc.get("radocs");
                 for (int i = 0; i < radocsIds.size(); i++) {
-                    if (string.equals(radocsIds.get(i))) {
+                    if (identificador.equals(radocsIds.get(i))) {
                         pode = false;
-                        System.out.println("Radoc vinculado ao parecer " + doc.get("id"));
                         break;
                     }
                 }
+
             }
-            
+            cursorParecer.close();
+
             while (cursor.hasNext()) {
 
                 if (pode == true) {
                     DBObject doc = cursor.next();
                     collRadoc.remove(doc);
-                    System.out.println("Radoc " + doc.get("id") + " removido com sucesso");
-                }
+                } 
                 
                 else {
-                    System.out.println("Radoc n pode ser removido");
                     break;
                 }
             }
@@ -280,49 +275,42 @@ public class PersistenciaParecer implements ParecerRepository {
     }
 
     /**
-     * Remove a nota cujo item {@link Avaliavel} original é
-     * fornedido.
+     * Remove a nota cujo item {@link Avaliavel} original é fornedido.
      *
      * @param id O identificador único do parecer.
-     * @param original Instância de {@link Avaliavel} que participa
-     *                 da {@link Nota} a ser removida como origem.
+     * @param original Instância de {@link Avaliavel} que participa da
+     * {@link Nota} a ser removida como origem.
      *
      */
     @Override
-    public void removeNota(String string, Avaliavel avlvl) {
-        BasicDBObject query = new BasicDBObject("id", string);
+    public void removeNota(String id, Avaliavel original) {
+        BasicDBObject query = new BasicDBObject("id", id);
         DBCursor cursor = collParecer.find(query);
+        Pontuacao pont = (Pontuacao) original;
         try {
             while (cursor.hasNext()) {
                 DBObject doc = cursor.next();
                 String json = doc.toString();
                 Parecer pare = gson.fromJson(json, Parecer.class);
-                List<Nota> notas = pare.getNotas();
+                List<Nota> notas = new ArrayList();
+                List<Pontuacao> pontuacoes = new ArrayList();
+                for (int i = 0; i < pare.getNotas().size(); i++) {
+                    notas.add(pare.getNotas().get(i));
+                    pontuacoes.add((Pontuacao) notas.get(i).getItemOriginal());
+                }
                 for (int i = 0; i < notas.size(); i++) {
-                    Nota nota = notas.get(i);
-                    if (avlvl.equals(nota.getItemOriginal())) {
-                        doc.removeField("notas");
+                    if (pont.getAtributo().equals(pontuacoes.get(i).getAtributo())) {
                         notas.remove(i);
-                        for (int p = 0; p < notas.size(); p++) {
-                            adicionaNota(string, notas.get(p));
-                        }
-                        
-                    } else {
-                        break;
+                        json = gson.toJson(notas);
+                        DBObject dbObject = (DBObject) JSON.parse(json);
+                        BasicDBObject novaNotas = new BasicDBObject();
+                        novaNotas.append("$set", new BasicDBObject().append("notas", dbObject));
+                        collParecer.update(query, novaNotas);
                     }
                 }
-
             }
         } finally {
             cursor.close();
-        }
-    }
-
-    public void mostrarTudo() {
-        DBCursor cursor = collParecer.find();
-        while (cursor.hasNext()) {
-            //collParecer.remove(cursor.next());
-            System.out.println(cursor.next());
         }
     }
 }

@@ -5,7 +5,6 @@
  */
 package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
-import br.ufg.inf.es.saep.sandbox.dominio.Avaliavel;
 import br.ufg.inf.es.saep.sandbox.dominio.Nota;
 import br.ufg.inf.es.saep.sandbox.dominio.Parecer;
 import br.ufg.inf.es.saep.sandbox.dominio.Pontuacao;
@@ -15,7 +14,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -56,14 +54,14 @@ public class PersistenciaParecerTest {
         persistencia.adicionaNota(id, notaNova);
         Parecer parecerAtualizado = persistencia.byId(id);
         boolean tst;
-        if (parecerAtualizado.getNotas().size() == 2){
+        if (parecerAtualizado.getNotas().size() == 2) {
             tst = false;
-        }
+        } 
         
-        else{
+        else {
             tst = true;
         }
-        Assert.assertFalse("A nota não está sendo adicionada no parecer.", tst);
+        Assert.assertTrue("A nota não está sendo adicionada no parecer.", tst);
     }
 
     /**
@@ -93,7 +91,7 @@ public class PersistenciaParecerTest {
         Parecer parecerTeste = persistencia.byId(id);
         Assert.assertNotNull("O parecer não foi salvo", parecerTeste);
         String Fundamentacao = UUID.randomUUID().toString();
-        persistencia.atualizaFundamentacao(Fundamentacao, Fundamentacao);
+        persistencia.atualizaFundamentacao(id, Fundamentacao);
         Parecer parecerAtualizado = persistencia.byId(id);
         Assert.assertEquals("Fundamentação não foi atualizada.", Fundamentacao, parecerAtualizado.getFundamentacao());
     }
@@ -121,13 +119,14 @@ public class PersistenciaParecerTest {
     @Test
     public void testPersisteRadoc() {
         System.out.println("persisteRadoc");
-        Radoc radoc = null;
-        PersistenciaParecer instance = new PersistenciaParecer();
-        String expResult = "";
-        String result = instance.persisteRadoc(radoc);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String id = UUID.randomUUID().toString();
+        Radoc radoc = objeto.criarRadoc(id);
+        persistencia.persisteRadoc(radoc);
+        Radoc radocSalvo = persistencia.radocById(id);
+        Assert.assertNotNull("Radoc não foi salvo.", radocSalvo);
+        persistencia.removeRadoc(id);
+        Radoc radocRemovido = persistencia.radocById(id);
+        Assert.assertNull("Radoc não foi removido com sucesso.", radocRemovido);
     }
 
     /**
@@ -136,11 +135,14 @@ public class PersistenciaParecerTest {
     @Test
     public void testRemoveRadoc() {
         System.out.println("removeRadoc");
-        String string = "";
-        PersistenciaParecer instance = new PersistenciaParecer();
-        instance.removeRadoc(string);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String id = UUID.randomUUID().toString();
+        Radoc radoc = objeto.criarRadoc(id);
+        persistencia.persisteRadoc(radoc);
+        Radoc radocSalvo = persistencia.radocById(id);
+        Assert.assertNotNull("Radoc não foi salvo.", radocSalvo);
+        persistencia.removeRadoc(id);
+        Radoc radocRemovido = persistencia.radocById(id);
+        Assert.assertNull("Radoc não foi removido com sucesso.", radocRemovido);
     }
 
     /**
@@ -161,25 +163,26 @@ public class PersistenciaParecerTest {
         persistencia.adicionaNota(id, notaNova);
         Parecer parecerAtualizado = persistencia.byId(id);
         boolean tst;
-        if (parecerAtualizado.getNotas().size() == 2){
+        System.out.println(parecerAtualizado.getNotas().size());
+        if (parecerAtualizado.getNotas().size() == 2) {
             tst = false;
-        }
+        } 
         
-        else{
+        else {
             tst = true;
         }
-        Assert.assertFalse("A nota não está sendo adicionada no parecer.", tst);
+        Assert.assertTrue("A nota não está sendo adicionada no parecer.", tst);
         persistencia.removeNota(id, pontuacao);
         Parecer parecerAtualizado2 = persistencia.byId(id);
-        boolean tst2 = false;
-        if (parecerAtualizado2.getNotas().size() == 3){
-            tst = false;
-        }
+        boolean tst2;
+        if (parecerAtualizado2.getNotas().size() == 3) {
+            tst2 = false;
+        } 
         
-        else{
-            tst = true;
+        else {
+            tst2 = true;
         }
-        Assert.assertFalse("Nota não está sendo removida.", tst2);
+        Assert.assertTrue("Nota não está sendo removida.", tst2);
     }
 
 }

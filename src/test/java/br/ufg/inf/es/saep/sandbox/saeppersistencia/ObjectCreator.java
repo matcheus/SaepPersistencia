@@ -1,5 +1,6 @@
 package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
+import br.ufg.inf.es.saep.sandbox.dominio.Atributo;
 import br.ufg.inf.es.saep.sandbox.dominio.Avaliavel;
 import br.ufg.inf.es.saep.sandbox.dominio.Nota;
 import br.ufg.inf.es.saep.sandbox.dominio.Parecer;
@@ -8,14 +9,17 @@ import br.ufg.inf.es.saep.sandbox.dominio.Radoc;
 import br.ufg.inf.es.saep.sandbox.dominio.Regra;
 import br.ufg.inf.es.saep.sandbox.dominio.Relato;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
+import br.ufg.inf.es.saep.sandbox.dominio.Tipo;
 import br.ufg.inf.es.saep.sandbox.dominio.Valor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -50,11 +54,11 @@ public class ObjectCreator {
 
     public static Nota criarNota(String atributo) {
         Valor valor = new Valor(atributo);
-        Avaliavel destino = new Pontuacao(atributo, valor);
+        Avaliavel original = new Pontuacao(atributo, valor);
         Valor valorBoole = new Valor(true);
         Map<String, Valor> map = new HashMap<>();
         map.put("Chave", valorBoole);
-        Avaliavel original = new Relato(atributo, map);
+        Avaliavel destino = new Relato(atributo, map);
         return new Nota(original, destino, "descrição da nota");
     }
 
@@ -106,5 +110,15 @@ public class ObjectCreator {
             relatos.add(relato);
         }
         return new Radoc(id, 2016, relatos);
+    }
+
+    public static Tipo criarTipo(String id, String nome) {
+        Set<Atributo> atributos = new HashSet<>();
+        for (int i = 0; i < 2; i++) {
+            atributos.add(new Atributo(String.valueOf(i), "Descrição do atributo", 1));
+        }
+        String nomeFinal = nome + id;
+        System.out.println(nomeFinal);
+        return new Tipo(id, nomeFinal, "Descrição do tipo", atributos);
     }
 }

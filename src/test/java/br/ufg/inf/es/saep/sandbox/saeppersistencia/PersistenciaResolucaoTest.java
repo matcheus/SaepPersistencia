@@ -5,12 +5,14 @@
  */
 package br.ufg.inf.es.saep.sandbox.saeppersistencia;
 
-import br.ufg.inf.es.saep.sandbox.dominio.Parecer;
 import br.ufg.inf.es.saep.sandbox.dominio.Resolucao;
 import br.ufg.inf.es.saep.sandbox.dominio.Tipo;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -20,79 +22,69 @@ import static org.junit.Assert.*;
  * @author Matheus
  */
 public class PersistenciaResolucaoTest {
-    
+
     ObjectCreator objeto = new ObjectCreator();
-    
+    PersistenciaResolucao persistencia = new PersistenciaResolucao();
+
     public PersistenciaResolucaoTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
-    }
-
-    /**
-     * Test of byId method, of class PersistenciaResolucao.
-     */
-    @Test
-    public void testById() {
-        System.out.println("byId");
-        String string = "";
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        Resolucao expResult = null;
-        Resolucao result = instance.byId(string);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of persiste method, of class PersistenciaResolucao.
      */
     @Test
-    public void testPersiste() {
+    public void testPersiste() throws ParseException {
         System.out.println("persiste radoc");
-        String id = UUID.randomUUID().toString();
-        Parecer parecer = objeto.criarParecer(id);
-        Resolucao rslc = null;
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        String expResult = "";
-        String result = instance.persiste(rslc);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Resolucao resolucao = objeto.criaResolucao(UUID.randomUUID().toString());
+        String id = persistencia.persiste(resolucao);
+        Assert.assertNotNull("Resolução não foi salva.", id);
+        Resolucao resolucaoSalva = persistencia.byId(id);
+        Assert.assertNotNull("Resolução não foi encontrada.",
+                resolucaoSalva);
+        Assert.assertEquals("As resolução não está sendo salva.", resolucao,
+                resolucaoSalva);
+        boolean removido = persistencia.remove(id);
+        Assert.assertTrue("Não foi possivel remover a resolução", removido);
     }
 
     /**
      * Test of remove method, of class PersistenciaResolucao.
      */
     @Test
-    public void testRemove() {
+    public void testRemove() throws ParseException {
         System.out.println("remove");
-        String string = "";
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        boolean expResult = false;
-        boolean result = instance.remove(string);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Resolucao resolucao = objeto.criaResolucao(UUID.randomUUID().toString());
+        String id = persistencia.persiste(resolucao);
+        Assert.assertNotNull("Resolução não foi salva.", id);
+        Resolucao resolucaoSalva = persistencia.byId(id);
+        Assert.assertNotNull("Resolução não foi encontrada.",
+                resolucaoSalva);
+        Assert.assertEquals("As resolução não está sendo salva.", resolucao,
+                resolucaoSalva);
+        boolean removido = persistencia.remove(id);
+        Assert.assertTrue("Não foi possivel remover a resolução", removido);
     }
 
     /**
      * Test of resolucoes method, of class PersistenciaResolucao.
      */
     @Test
-    public void testResolucoes() {
+    public void testResolucoes() throws ParseException {
         System.out.println("resolucoes");
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        List<String> expResult = null;
-        List<String> result = instance.resolucoes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        List<String> idsSalvos = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Resolucao resolucao = objeto.criaResolucao(String.valueOf(i));
+            String id = persistencia.persiste(resolucao);
+            idsSalvos.add(id);
+        }
     }
 
     /**
@@ -101,39 +93,15 @@ public class PersistenciaResolucaoTest {
     @Test
     public void testPersisteTipo() {
         System.out.println("persisteTipo");
-        Tipo tipo = null;
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        instance.persisteTipo(tipo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of removeTipo method, of class PersistenciaResolucao.
-     */
-    @Test
-    public void testRemoveTipo() {
-        System.out.println("removeTipo");
-        String string = "";
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        instance.removeTipo(string);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of tipoPeloCodigo method, of class PersistenciaResolucao.
-     */
-    @Test
-    public void testTipoPeloCodigo() {
-        System.out.println("tipoPeloCodigo");
-        String string = "";
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        Tipo expResult = null;
-        Tipo result = instance.tipoPeloCodigo(string);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String idTipo = UUID.randomUUID().toString();
+        Tipo tipo = objeto.criarTipo(idTipo, "tipo");
+        persistencia.persisteTipo(tipo);
+        Tipo tipoSalvo = persistencia.tipoPeloCodigo(idTipo);
+        Assert.assertNotNull("Tipo não foi encontrado", tipoSalvo);
+        Assert.assertEquals("O tipo não está sendo salvo.", tipo, tipoSalvo);
+        persistencia.removeTipo(idTipo);
+        Tipo tipoRemovido = persistencia.tipoPeloCodigo(idTipo);
+        Assert.assertNull("Tipo não foi removido com sucesso.", tipoRemovido);
     }
 
     /**
@@ -142,13 +110,16 @@ public class PersistenciaResolucaoTest {
     @Test
     public void testTiposPeloNome() {
         System.out.println("tiposPeloNome");
-        String string = "";
-        PersistenciaResolucao instance = new PersistenciaResolucao();
-        List<Tipo> expResult = null;
-        List<Tipo> result = instance.tiposPeloNome(string);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        List<Tipo> tiposAProcurar = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            String idTipo = String.valueOf(i);
+            Tipo tipo = objeto.criarTipo(idTipo, "tipo");
+            persistencia.persisteTipo(tipo);
+            tiposAProcurar.add(tipo);
+        }
+        List<Tipo> tipos = persistencia.tiposPeloNome("tipo0");
+        Assert.assertNotNull("Tipos não foram encontrados.", tipos);
+        Assert.assertFalse("Não foram encontrados tipos.", tipos.size() > 0);
     }
-    
+
 }
